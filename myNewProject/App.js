@@ -16,8 +16,11 @@ import image from "./assets/register-bg.jpg";
 import RegistrationScreen from "./screens/RegistrationScreen";
 import LoginScreen from "./screens/LoginScreen";
 
+const windowDimensions = Dimensions.get("window").width;
+
 export default function App() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [dimensions, setDimensions] = useState(windowDimensions);
   const [fontsLoaded] = useFonts({
     "Roboto-Bold": require("./assets/Fonts/Roboto-Bold.ttf"),
     "Roboto-Medium": require("./assets/Fonts/Roboto-Medium.ttf"),
@@ -29,6 +32,18 @@ export default function App() {
       await SplashScreen.preventAutoHideAsync();
     }
     prepare();
+  }, []);
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width;
+      setDimensions(width);
+    };
+
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
   }, []);
 
   if (!fontsLoaded) {
@@ -48,7 +63,7 @@ export default function App() {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
+      <View style={{ ...styles.container, width: dimensions }}>
         <ImageBackground source={image} style={styles.image}>
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -82,7 +97,5 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
   },
 });

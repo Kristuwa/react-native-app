@@ -30,7 +30,12 @@ export default function RegistrationScreen({
   };
 
   return (
-    <View style={styles.form}>
+    <View
+      style={{
+        ...styles.form,
+        paddingBottom: isShowKeyboard ? 0 : 66,
+      }}
+    >
       <View style={styles.userImage}>
         <TouchableOpacity style={styles.btnAdd}>
           <AntDesign name="pluscircleo" size={24} color={"#FF6C00"} />
@@ -115,7 +120,6 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     paddingTop: 92,
-    paddingBottom: 66,
     marginTop: "auto",
     backgroundColor: "#ffffff",
     borderTopRightRadius: 25,
